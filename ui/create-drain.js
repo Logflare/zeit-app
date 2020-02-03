@@ -5,7 +5,9 @@ const route = require("../lib/route");
 module.exports = async arg => {
   const { payload } = arg;
   const { clientState, configurationId, teamId, token } = payload;
-  const { name, projectId, type, url } = clientState;
+  var { name, projectId, type, url, logflareSourceId, logflareApiKey } = clientState;
+
+  url = url + `?api_key=${logflareApiKey}&source_id=${logflareSourceId}`
 
   console.log("getting metadata");
   const metadata = await getMetadata({ configurationId, token, teamId });
