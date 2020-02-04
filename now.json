@@ -1,5 +1,5 @@
 {
-  "name": "logflare-integration",
+  "name": "logflare-zeit-app",
   "env": {
     "HOST": "@host",
     "CLIENT_ID": "@client_id",
