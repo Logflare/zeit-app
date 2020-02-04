@@ -1,8 +1,6 @@
 {
   "name": "logflare-integration",
   "env": {
-    "INGEST_KEY": "@ingest_key",
-    "SOURCE_ID": "@source_id",
     "HOST": "@host",
     "CLIENT_ID": "@client_id",
     "CLIENT_SECRET": "@client_secret"
