@@ -45,10 +45,19 @@ module.exports = async (arg, { state }) => {
 
   return htm`
     <Page>
+      <Fieldset>
+          <FsContent>
+            <H2>Create Your Logflare Account</H2>
+            <P>Visit <Link href="https://logflare.app" target="_blank">Logflare</Link> and create an account</P>
+          </FsContent>
+          <FsFooter>
+            <P>If you already have an account <Link href="https://logflare.app/dashboard" target="_blank">go to your Logflare dashboard</Link></P>
+          </FsFooter>
+        </Fieldset>
+        <Box display="flex" justifyContent="flex-end">
+          <Button action="new-drain">Create drain</Button>
+        </Box>
       <H1>Log Drains</H1>
-      <Box display="flex" justifyContent="flex-end">
-        <Button action="new-drain">Create Drain</Button>
-      </Box>
       ${errorMessage ? htm`<Notice type="error">${errorMessage}</Notice>` : ""}
       ${
         drains.length
@@ -59,8 +68,6 @@ module.exports = async (arg, { state }) => {
               return htm`
             <Fieldset>
               <FsContent>
-                <Box display="flex" justifyContent="space-between">
-                  <Box>
                     <H2>${drain.name}</H2>
                     <P><B>Type:</B> ${drain.type}</P>
                     <P><B>URL:</B> ${drain.url}</P>
@@ -75,11 +82,8 @@ module.exports = async (arg, { state }) => {
                         ? htm`<Box color="red"><P>The project subscribing is already deleted (ID: ${drain.projectId})</P></Box>`
                         : ""
                     }
-                  </Box>
-                  <Box alignItems="flex-end" display="flex" flexDirection="column" justifyContent="space-between">
-                    <P><Box color="#666">${ms(
-                      Date.now() - drain.createdAt
-                    )}</Box></P>
+                    </FsContent>
+                  <FsFooter>
                     ${
                       drain.clientId === integrationId
                         ? htm`<Button action=${`delete-drain?${stringify({
@@ -95,15 +99,14 @@ module.exports = async (arg, { state }) => {
                           </P>
                         `
                     }
-                  </Box>
-                </Box>
-              </FsContent>
+
+                  </FsFooter>
             </Fieldset>
           `;
             })
           : htm`
           <Box alignItems="center" display="flex" height="300px" justifyContent="center">
-            <P>No drain found: <Link action="list-drains">Create a new log drain</Link></P>
+            <P>No drain found!</P>
           </Box>
         `
       }
