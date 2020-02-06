@@ -4,7 +4,7 @@ const getProjects = require("../lib/get-projects");
 module.exports = async (arg, { state }) => {
   const { payload } = arg;
   const { clientState, teamId, token } = payload;
-  const { name = "", projectId = "", type = "json", url = "https://logflare.app/logs/zeit", logflareSourceId = "", logflareApiKey = "" } = clientState;
+  const { name = "", projectId = "", type = "json", url = "https://api.logflare.app/logs/zeit", logflareSourceId = "", logflareApiKey = "" } = clientState;
   const { errorMessage } = state;
 
   const projects = await getProjects({ token, teamId });
