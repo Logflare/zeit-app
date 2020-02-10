@@ -2,7 +2,6 @@ const { htm } = require("@zeit/integration-utils");
 const ms = require("ms");
 const { stringify } = require("querystring");
 const getLogDrains = require("../lib/get-log-drains");
-const getIntegration = require("../lib/get-integration");
 const getProject = require("../lib/get-project");
 
 module.exports = async (arg, { state }) => {
@@ -11,20 +10,6 @@ module.exports = async (arg, { state }) => {
   const { errorMessage } = state;
   const drains = await getLogDrains({ teamId, token });
   drains.sort((a, b) => b.createdAt - a.createdAt);
-
-  const otherIntergraionIds = new Set(
-    drains.filter(d => d.clientId !== integrationId).map(d => d.clientId)
-  );
-
-  let otherIntergraionsMap;
-  if (otherIntergraionIds.size) {
-    const otherIntegrations = await Promise.all(
-      [...otherIntergraionIds].map(id =>
-        getIntegration({ teamId, token }, { id })
-      )
-    );
-    otherIntergraionsMap = new Map(otherIntegrations.map(i => [i.id, i]));
-  }
 
   const projectIds = new Set(drains.map(d => d.projectId).filter(Boolean));
   const projectMap = new Map(
@@ -93,9 +78,7 @@ module.exports = async (arg, { state }) => {
                           <P>
                             Created by <Link href=${`https://zeit.co/dashboard/integrations/${encodeURIComponent(
                               drain.configurationId
-                            )}`}>${
-                            otherIntergraionsMap.get(drain.clientId).name
-                          }</Link>
+                            )}`}>another integration</Link>
                           </P>
                         `
                     }
