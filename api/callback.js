@@ -1,9 +1,7 @@
 const {
   parse
 } = require("url");
-const {
-  HOST
-} = require("../lib/env");
+const { HOST, LOGFLARE_HOST } = require("../lib/env");
 const getAccessToken = require("../lib/get-access-token");
 const getLogflareAccessToken = require("../lib/get-logflare-access-token");
 const setMetadata = require("../lib/set-metadata");
@@ -34,12 +32,12 @@ module.exports = async (req, res) => {
       const query = stringify({
         next
       });
-      return `https://dev.chasegranberry.net/api/callback?code=${code[1]}&teamId=${teamId}&configurationId=${configurationId}&${query}`
+      return `${HOST}/api/callback?code=${code[1]}&teamId=${teamId}&configurationId=${configurationId}&${query}`
     } else {
       const query = stringify({
         next,
       });
-      return `https://dev.chasegranberry.net/api/callback?code=${code[1]}&configurationId=${configurationId}&${query}`
+      return `${HOST}/api/callback?code=${code[1]}&configurationId=${configurationId}&${query}`
     }
   }
 
@@ -52,7 +50,7 @@ module.exports = async (req, res) => {
   console.log("Getting accessToken");
   const token = await getAccessToken({
     code: code[1],
-    redirectUri: `http://localhost:4000/install/zeit`
+    redirectUri: `${LOGFLARE_HOST}/install/zeit`
   });
 
   console.log("Storing accessToken to metadata");
