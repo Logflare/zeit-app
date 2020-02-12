@@ -26,7 +26,9 @@ While in your project root directory:
 now secrets add host LOGFLARE_ZEIT_APP_HOST_DOMAIN
 now secrets add client_id LOGFLARE_ZIET_APP_CLIENT_ID
 now secrets add client_secret LOGFLARE_ZIET_APP_SECRET
+```
 
+```
 now secrets add logflare_host LOGFLARE_ZIET_APP_SECRET
 now secrets add logflare_client_id LOGFLARE_ZIET_APP_SECRET
 now secrets add logflare_client_secret LOGFLARE_ZIET_APP_SECRET
