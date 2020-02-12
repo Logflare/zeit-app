@@ -1,15 +1,26 @@
-const { htm } = require("@zeit/integration-utils");
+const {
+  htm
+} = require("@zeit/integration-utils");
 const getProjects = require("../lib/get-projects");
+const getMetadata = require("../lib/get-metadata");
 
 module.exports = async (arg, { state }) => {
   const { payload } = arg;
-  const { clientState, teamId, token } = payload;
+  const { clientState, teamId, token, configurationId } = payload;
   const { name = "", projectId = "", type = "json", url = "https://api.logflare.app/logs/zeit", logflareSourceId = "", logflareApiKey = "" } = clientState;
   const { errorMessage } = state;
 
-  const projects = await getProjects({ token, teamId });
+  const projects = await getProjects({
+    token,
+    teamId
+  });
+  const metadata = await getMetadata({
+    configurationId,
+    token,
+    teamId
+  });
 
-  return htm`
+  return htm `
     <Page>
       <P><Link action="list-drains">Back to list</Link></P>
       <Box marginBottom="50px">

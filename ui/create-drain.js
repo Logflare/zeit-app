@@ -14,18 +14,15 @@ module.exports = async arg => {
 
   console.log("creating a new log drain");
   try {
-    await createLogDrain(
-      {
-        token: metadata.token,
-        teamId
-      },
-      {
-        name,
-        projectId: projectId || null,
-        type,
-        url
-      }
-    );
+    await createLogDrain({
+      token: metadata.token,
+      teamId
+    }, {
+      name,
+      projectId: projectId || null,
+      type,
+      url
+    });
   } catch (err) {
     if (err.body && err.body.error) {
       return route(arg, "new-drain", {

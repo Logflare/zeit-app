@@ -12,15 +12,12 @@ module.exports = async (arg, { params }) => {
   console.log(`Deleting log drain: ${params.id}`);
   const state = {};
   try {
-    await deleteLogDrain(
-      {
-        token: metadata.token,
-        teamId
-      },
-      {
-        id: params.id
-      }
-    );
+    await deleteLogDrain({
+      token: metadata.token,
+      teamId
+    }, {
+      id: params.id
+    });
   } catch (err) {
     if (err.body && err.body.error) {
       state.errorMessage = err.body.error.message;
