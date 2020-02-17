@@ -25,22 +25,22 @@ module.exports = async (arg, { state }) => {
       <Box marginBottom="50px">
       <Fieldset>
           <FsContent>
-          <H2>Name</H2>
-          <Input label="" name="name" value=${name} maxWidth="500px" width="100%" />
-        </FsContent>
-        <FsFooter>
-          <P>This is the name of your new log drain</P>
-        </FsFooter>
-      </Fieldset>
-
-      <Fieldset>
-          <FsContent>
           <H2>Project (optional)</H2>
           <ProjectSwitcher message="Choose a project from the list"></ProjectSwitcher>
 
         </FsContent>
         <FsFooter>
           <P>We suggest you set a project or all logs for all projects will go to one Logflare source</P>
+        </FsFooter>
+      </Fieldset>
+
+      <Fieldset>
+          <FsContent>
+          <H2>Name</H2>
+          <Input label="" name="name" value=${name} maxWidth="500px" width="100%" />
+        </FsContent>
+        <FsFooter>
+          <P>This is the name of your new log drain</P>
         </FsFooter>
       </Fieldset>
 
