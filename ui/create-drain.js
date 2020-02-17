@@ -4,13 +4,13 @@ const route = require("../lib/route");
 
 module.exports = async arg => {
   const { payload } = arg;
-  const { clientState, configurationId, teamId, token } = payload;
-  var { name, projectId, type, url, logflareSourceId, logflareApiKey } = clientState;
-
-  url = url + `?api_key=${logflareApiKey}&source_id=${logflareSourceId}`
+  const { clientState, configurationId, teamId, token, projectId } = payload;
+  var { name, type = "json", url = "https://api.logflare.app/logs/zeit", logflareSourceId, logflareApiKey } = clientState;
 
   console.log("getting metadata");
   const metadata = await getMetadata({ configurationId, token, teamId });
+
+  url = url + `?api_key=${metadata.logflareAccount.api_key}&source_id=${logflareSourceId}`
 
   console.log("creating a new log drain");
   try {
@@ -19,7 +19,7 @@ module.exports = async arg => {
       teamId
     }, {
       name,
-      projectId: projectId || null,
+      projectId: projectId,
       type,
       url
     });

@@ -1,8 +1,7 @@
-const {
-  htm
-} = require("@zeit/integration-utils");
+const { htm } = require("@zeit/integration-utils");
 const getProjects = require("../lib/get-projects");
 const getMetadata = require("../lib/get-metadata");
+const getLogflareSources = require("../lib/get-logflare-sources");
 
 module.exports = async (arg, { state }) => {
   const { payload } = arg;
@@ -10,15 +9,18 @@ module.exports = async (arg, { state }) => {
   const { name = "", projectId = "", type = "json", url = "https://api.logflare.app/logs/zeit", logflareSourceId = "", logflareApiKey = "" } = clientState;
   const { errorMessage } = state;
 
-  const projects = await getProjects({
-    token,
-    teamId
-  });
   const metadata = await getMetadata({
     configurationId,
     token,
     teamId
   });
+
+  console.log(state)
+  console.log(arg)
+
+  const logflareToken = metadata.logflareToken
+
+  const logflareSources = await getLogflareSources({ logflareToken });
 
   return htm `
     <Page>
@@ -37,10 +39,8 @@ module.exports = async (arg, { state }) => {
       <Fieldset>
           <FsContent>
           <H2>Project (optional)</H2>
-          <Select label="" name="projectId" value=${projectId}>
-            <Option value="" caption="Select a project" />
-            ${projects.map(p => htm`<Option value=${p.id} caption=${p.name} />`)}
-          </Select>
+          <ProjectSwitcher message="Choose a project from the list"></ProjectSwitcher>
+
         </FsContent>
         <FsFooter>
           <P>We suggest you set a project or all logs for all projects will go to one Logflare source</P>
@@ -49,43 +49,14 @@ module.exports = async (arg, { state }) => {
 
       <Fieldset>
           <FsContent>
-          <H2>Logflare Source ID</H2>
-          <Input label="" name="logflareSourceId" value=${logflareSourceId} maxWidth="500px" width="100%" />
-        </FsContent>
-        <FsFooter>
-          <P>After you create a source in Logflare find the source ID on <Link href="https://logflare.app/dashboard" target="_blank">your dashboard</Link></P>
-        </FsFooter>
-      </Fieldset>
-
-      <Fieldset>
-          <FsContent>
-          <H2>Logflare Ingest API Key</H2>
-          <Input label="" name="logflareApiKey" value=${logflareApiKey} maxWidth="500px" width="100%" />
-        </FsContent>
-        <FsFooter>
-          <P>Copy the Logflare ingest API key from <Link href="https://logflare.app/dashboard" target="_blank">your Logflare dashboard</Link></P>
-        </FsFooter>
-      </Fieldset>
-
-      <Fieldset>
-          <FsContent>
-          <H2>Logflare Ingest Endpoint</H2>
-          <Input label="" name="url" value=${url} maxWidth="500px" width="100%"/>
-        </FsContent>
-        <FsFooter>
-          <P>Don't edit this or your logs won't go anywhere</P>
-        </FsFooter>
-      </Fieldset>
-
-      <Fieldset>
-          <FsContent>
-          <H2>Log Event Format</H2>
-          <Select label="" name="type" value=${type}>
-            <Option value="json" caption="json" />
+          <H2>Logflare Source</H2>
+          <Select label="" name="logflareSourceId" value=${logflareSourceId}>
+            <Option value="" caption="Select a source" />
+            ${logflareSources.map(s => htm`<Option value=${s.token} caption=${s.name} />`)}
           </Select>
         </FsContent>
         <FsFooter>
-          <P>Should always be JSON</P>
+          <P>Pick a Logflare source to send logs to</P>
         </FsFooter>
       </Fieldset>
 
