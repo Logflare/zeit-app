@@ -51,16 +51,23 @@ module.exports = async (arg, { state }) => {
             ${
               metadata.logflareToken
                 ? htm`<P>🥳Yes! You've successfully authenticated with Logflare.</P>`
-                : htm`<P>Something is off here. Please reinstall the Logflare Zeit app.</P>`
+                : htm`<P>Something is wrong here. Please reinstall the <Link href="https://zeit.co/integrations/logflare">Logflare Zeit</Link> app.</P>`
             }
           </FsContent>
           <FsFooter>
             <P>To 🌊stream, 🔎 search and 📈dashboard structured logs visit <Link href="https://logflare.app/dashboard" target="_blank">your Logflare dashboard</Link></P>
           </FsFooter>
         </Fieldset>
+        ${
+          metadata.logflareToken
+          ? htm`
         <Box display="flex" justifyContent="flex-end">
           <Button action="new-drain">Create drain</Button>
-        </Box>
+        </Box>`
+         : htm`<Box display="flex" justifyContent="flex-end">
+           <Button disabled action="new-drain">Create drain</Button>
+         </Box>`
+      }
       <H1>🚰 Log Drains</H1>
       ${errorMessage ? htm`<Notice type="error">${errorMessage}</Notice>` : ""}
       ${
@@ -73,8 +80,7 @@ module.exports = async (arg, { state }) => {
             <Fieldset>
               <FsContent>
                     <H2>${drain.name}</H2>
-                    <P><B>Type:</B> ${drain.type}</P>
-                    <P><B>URL:</B> ${drain.url}</P>
+                    <P><B>Sending logs to:</B> ${drain.url}</P>
                     ${
                       project
                         ? htm`<P><B>Project:</B> <Link href=${`https://zeit.co/${encodeURIComponent(
@@ -106,14 +112,8 @@ module.exports = async (arg, { state }) => {
             </Fieldset>
           `;
             })
-          : htm` <
-    Box alignItems = "center"
-  display = "flex"
-  height = "300px"
-  justifyContent = "center" >
-    <
-    P > No drain found! < /P> < /
-  Box >
+          : htm`
+  No drains found!
     `
       }
       <AutoRefresh timeout="60000" />

@@ -4,6 +4,7 @@ const {
 const { HOST, LOGFLARE_HOST } = require("../lib/env");
 const getAccessToken = require("../lib/get-access-token");
 const getLogflareAccessToken = require("../lib/get-logflare-access-token");
+const getLogflareAccount = require("../lib/get-logflare-account");
 const setMetadata = require("../lib/set-metadata");
 const {
   stringify
@@ -53,6 +54,11 @@ module.exports = async (req, res) => {
     redirectUri: `${LOGFLARE_HOST}/install/zeit`
   });
 
+  console.log("Getting logflareAccount");
+  const logflareAccount = await getLogflareAccount({
+    logflareToken
+  });
+
   console.log("Storing accessToken to metadata");
   await setMetadata({
     configurationId,
@@ -60,7 +66,8 @@ module.exports = async (req, res) => {
     teamId
   }, {
     token,
-    logflareToken
+    logflareToken,
+    logflareAccount
   });
 
   /* console.log(`Got ingest_api_key: ${ingest_api_key}`)
