@@ -15,9 +15,6 @@ module.exports = async (arg, { state }) => {
     teamId
   });
 
-  console.log(state)
-  console.log(arg)
-
   const logflareToken = metadata.logflareToken
 
   const logflareSources = await getLogflareSources({ logflareToken });
