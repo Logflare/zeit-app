@@ -9,14 +9,22 @@ module.exports = async (arg, { state }) => {
   const { name = "", projectId = "", type = "json", url = "https://api.logflare.app/logs/zeit", logflareSourceId = "", logflareApiKey = "" } = clientState;
   const { errorMessage } = state;
 
+  console.log("Getting metadata");
   const metadata = await getMetadata({
     configurationId,
     token,
     teamId
   });
 
+  console.log("Getting projects");
+  const projects = await getProjects({
+    token,
+    teamId
+  });
+
   const logflareToken = metadata.logflareToken
 
+  console.log("Getting Logflare sources");
   const logflareSources = await getLogflareSources({ logflareToken });
 
   return htm `
@@ -26,8 +34,10 @@ module.exports = async (arg, { state }) => {
       <Fieldset>
           <FsContent>
           <H2>Project (optional)</H2>
-          <ProjectSwitcher message="Choose a project from the list"></ProjectSwitcher>
-
+          <Select label="" name="projectId" value=${projectId}>
+            <Option value="" caption="Select a project" />
+            ${projects.map(p => htm`<Option value=${p.id} caption=${p.name} />`)}
+          </Select>
         </FsContent>
         <FsFooter>
           <P>We suggest you set a project or all logs for all projects will go to one Logflare source</P>
