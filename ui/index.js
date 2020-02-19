@@ -13,10 +13,22 @@ module.exports = async (arg, { state }) => {
   const { payload } = arg;
   const { integrationId, team, teamId, token, user, configurationId } = payload;
   const { errorMessage } = state;
+
+  console.log("Getting drains")
   const drains = await getLogDrains({ teamId, token });
   drains.sort((a, b) => b.createdAt - a.createdAt);
 
-  console.log("getting metadata");
+  console.log("Logging map")
+  let myMap = new Map()
+  let keyString = 'a string'
+  let keyObj = {}
+  let keyFunc = function() {}
+  myMap.set(keyString, "value associated with 'a string'")
+  myMap.set(keyObj, 'value associated with keyObj')
+  myMap.set(keyFunc, 'value associated with keyFunc')
+  console.log(myMap)
+
+  console.log("Getting metadata");
   const metadata = await getMetadata({
     configurationId,
     token,
