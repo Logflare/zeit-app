@@ -26,7 +26,6 @@ module.exports = async (req, res) => {
   }
 
   console.log("Got codes");
-  console.log(code)
 
   function redirectUri() {
     if (teamId) {
@@ -69,9 +68,6 @@ module.exports = async (req, res) => {
     logflareToken,
     logflareAccount
   });
-
-  /* console.log(`Got ingest_api_key: ${ingest_api_key}`)
-  await setMetadata({ configurationId, token, teamId }, { ingest_api_key }); */
 
   res.statusCode = 302;
   res.setHeader("Location", next);
