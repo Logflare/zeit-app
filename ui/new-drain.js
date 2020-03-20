@@ -61,7 +61,6 @@ module.exports = async (arg, { state }) => {
             <Option value="" caption="Select a source" />
             ${logflareSources.map(s => htm`<Option value=${s.token} caption=${s.name} />`)}
           </Select>
-
         </FsContent>
         <FsFooter>
           <P>Pick a Logflare source or <Link href="https://logflare.app/sources/new" target="_blank">create a new source</Link></P>

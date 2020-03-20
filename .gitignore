@@ -12,3 +12,5 @@ erl_crash.dump
 # Ziet Stuff
 .env
 /node_modules
+
+.now
