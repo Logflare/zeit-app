@@ -1,4 +1,4 @@
-# Logflare Zeit App
+# Logflare Vercel App
 Install the Logflare Ziet app at: https://zeit.co/integrations/logflare
 
 ## Setup for Dev

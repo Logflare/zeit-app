@@ -50,7 +50,7 @@ module.exports = async (req, res) => {
   console.log("Getting accessToken");
   const token = await getAccessToken({
     code: code[1],
-    redirectUri: `${LOGFLARE_HOST}/install/zeit`
+    redirectUri: `${LOGFLARE_HOST}/install/vercel`
   });
 
   console.log("Getting logflareAccount");
