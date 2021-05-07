@@ -52,6 +52,8 @@ module.exports = async (arg, { state }) => {
     d.sourceId = sourceId
     d.logflareSource = source
 
+    console.log(source)
+
     d.logflareUrlForErrors = new URL(`https://logflare.app/sources/${source.id}/search?tailing=true`);
     d.logflareUrlForErrors.searchParams.append('querystring', 'm.proxy.statusCode:>499 c:count(*) c:group_by(t::hour)');
 
