@@ -18,10 +18,10 @@
     esutils "^2.0.2"
     js-tokens "^4.0.0"
 
-"@zeit/integration-utils@0.6.4":
-  version "0.6.4"
-  resolved "https://registry.yarnpkg.com/@zeit/integration-utils/-/integration-utils-0.6.4.tgz#dcd329123ae649aa4012c3930b7fd624495fca8c"
-  integrity sha512-Posy7buLlvxYHh//lA2mEoEZOrb2yJYiHXM8XN0udQnxksexTBfpLryZ+bQ3dGl67PVKyjkAeU3sRBQmAfpLyw==
+"@vercel/integration-utils@0.6.5-canary.0":
+  version "0.6.5-canary.0"
+  resolved "https://registry.yarnpkg.com/@vercel/integration-utils/-/integration-utils-0.6.5-canary.0.tgz#20030530b12f6d9876807b8b4124a7e783a9e842"
+  integrity sha512-rfYiq6OVm+xP1FEYN6Z6zTGc4owWxnbDDvZmpIl4czcnixoBPydGz9/CTWIzodRhPS7e7Izsx0os+D8JH/bdQQ==
   dependencies:
     htm "2.1.1"
     micro "9.3.4"

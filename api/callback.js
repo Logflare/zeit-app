@@ -1,23 +1,14 @@
-const {
-  parse
-} = require("url");
+const { parse } = require("url");
 const { HOST, LOGFLARE_HOST } = require("../lib/env");
 const getAccessToken = require("../lib/get-access-token");
 const getLogflareAccessToken = require("../lib/get-logflare-access-token");
 const getLogflareAccount = require("../lib/get-logflare-account");
 const setMetadata = require("../lib/set-metadata");
-const {
-  stringify
-} = require("querystring");
+const { stringify } = require("querystring");
 
 module.exports = async (req, res) => {
   const {
-    query: {
-      code,
-      configurationId,
-      teamId,
-      next
-    }
+    query: { code, configurationId, teamId, next }
   } = parse(req.url, true);
   if (!code) {
     res.statusCode = 400;
@@ -32,14 +23,16 @@ module.exports = async (req, res) => {
       const query = stringify({
         next
       });
-      return `${HOST}/api/callback?code=${code[1]}&teamId=${teamId}&configurationId=${configurationId}&${query}`
+      return `${HOST}/api/callback?code=${code[1]}&teamId=${teamId}&configurationId=${configurationId}&${query}`;
     } else {
       const query = stringify({
-        next,
+        next
       });
-      return `${HOST}/api/callback?code=${code[1]}&configurationId=${configurationId}&${query}`
+      return `${HOST}/api/callback?code=${code[1]}&configurationId=${configurationId}&${query}`;
     }
   }
+
+  console.log(code)
 
   console.log("Getting gettingLogflareAccessToken");
   const logflareToken = await getLogflareAccessToken({
@@ -59,15 +52,18 @@ module.exports = async (req, res) => {
   });
 
   console.log("Storing accessToken to metadata");
-  await setMetadata({
-    configurationId,
-    token,
-    teamId
-  }, {
-    token,
-    logflareToken,
-    logflareAccount
-  });
+  await setMetadata(
+    {
+      configurationId,
+      token,
+      teamId
+    },
+    {
+      token,
+      logflareToken,
+      logflareAccount
+    }
+  );
 
   res.statusCode = 302;
   res.setHeader("Location", next);

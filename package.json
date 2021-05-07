@@ -1,13 +1,13 @@
 {
-  "name": "log-drains",
-  "version": "0.0.0",
+  "name": "logflare-vercel-app",
+  "version": "1.1.0",
   "license": "MIT",
   "scripts": {
     "format": "prettier --write '**/*.js'",
     "lint": "eslint ."
   },
   "dependencies": {
-    "@zeit/integration-utils": "0.6.4",
+    "@vercel/integration-utils": "0.6.5-canary.0",
     "ms": "2.1.2",
     "node-fetch": "2.6.0",
     "raw-body": "2.4.1"
