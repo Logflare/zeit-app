@@ -54,23 +54,27 @@ module.exports = async (arg, { state }) => {
 
     console.log(source)
 
-    d.logflareUrlForErrors = new URL(`https://logflare.app/sources/${source.id}/search?tailing=true`);
-    d.logflareUrlForErrors.searchParams.append('querystring', 'm.proxy.statusCode:>499 c:count(*) c:group_by(t::hour)');
+    if (source) {
 
-    d.logflareUrlForSlows = new URL(`https://logflare.app/sources/${source.id}/search?tailing=true`);
-    d.logflareUrlForSlows.searchParams.append('querystring', 'm.parsedLambdaMessage.report.duration_ms:>2500 c:count(*) c:group_by(t::hour)');
+      d.logflareUrlForErrors = new URL(`https://logflare.app/sources/${source.id}/search?tailing=true`);
+      d.logflareUrlForErrors.searchParams.append('querystring', 'm.proxy.statusCode:>499 c:count(*) c:group_by(t::hour)');
 
-    d.logflareUrlForLambdas = new URL(`https://logflare.app/sources/${source.id}/search?tailing=true`);
-    d.logflareUrlForLambdas.searchParams.append('querystring', 'm.souce:"lambda" c:count(*) c:group_by(t::hour)');
+      d.logflareUrlForSlows = new URL(`https://logflare.app/sources/${source.id}/search?tailing=true`);
+      d.logflareUrlForSlows.searchParams.append('querystring', 'm.parsedLambdaMessage.report.duration_ms:>2500 c:count(*) c:group_by(t::hour)');
 
-    d.logflareUrlForStatics = new URL(`https://logflare.app/sources/${source.id}/search?tailing=true`);
-    d.logflareUrlForStatics.searchParams.append('querystring', 'm.souce:"static" c:count(*) c:group_by(t::hour)');
+      d.logflareUrlForLambdas = new URL(`https://logflare.app/sources/${source.id}/search?tailing=true`);
+      d.logflareUrlForLambdas.searchParams.append('querystring', 'm.souce:"lambda" c:count(*) c:group_by(t::hour)');
 
-    d.logflareUrlForConsoles = new URL(`https://logflare.app/sources/${source.id}/search?tailing=true`);
-    d.logflareUrlForConsoles.searchParams.append('querystring', '-m.parsedLambdaMessage.lines.level:NULL c:count(*) c:group_by(t::hour)');
+      d.logflareUrlForStatics = new URL(`https://logflare.app/sources/${source.id}/search?tailing=true`);
+      d.logflareUrlForStatics.searchParams.append('querystring', 'm.souce:"static" c:count(*) c:group_by(t::hour)');
 
-    d.logflareUrlForGoogleBots = new URL(`https://logflare.app/sources/${source.id}/search?tailing=true`);
-    d.logflareUrlForGoogleBots.searchParams.append('querystring', 'm.proxy.userAgent:~"Google" c:count(*) c:group_by(t::hour)');
+      d.logflareUrlForConsoles = new URL(`https://logflare.app/sources/${source.id}/search?tailing=true`);
+      d.logflareUrlForConsoles.searchParams.append('querystring', '-m.parsedLambdaMessage.lines.level:NULL c:count(*) c:group_by(t::hour)');
+
+      d.logflareUrlForGoogleBots = new URL(`https://logflare.app/sources/${source.id}/search?tailing=true`);
+      d.logflareUrlForGoogleBots.searchParams.append('querystring', 'm.proxy.userAgent:~"Google" c:count(*) c:group_by(t::hour)');
+
+    }
 
 
   });
@@ -133,9 +137,12 @@ module.exports = async (arg, { state }) => {
               <FsContent>
                     <H2>${drain.name}</H2>
                     <P><B>Sending logs to:</B> ${drain.url}</P>
-                    <P><B>Stream these logs in Logflare:</B> <Link href=${`https://logflare.app/sources/${drain.logflareSource.id}`} target='_blank'>${`https://logflare.app/sources/${drain.logflareSource.id}`}</Link></P>
+          ${drain.logflareSource
+            ? htm`<P><B>Stream these logs in Logflare:</B> <Link href=${`https://logflare.app/sources/${drain.logflareSource.id}`} target='_blank'>${`https://logflare.app/sources/${drain.logflareSource.id}`}</Link></P>`
+            : ''
+          }
                     
-                    ${project
+          ${project
             ? htm`<P><B>Project:</B> <Link href=${`https://vercel.com/${encodeURIComponent(
               team ? team.slug : user.username
             )}/${encodeURIComponent(project.name)}`}>${project.name
@@ -144,18 +151,23 @@ module.exports = async (arg, { state }) => {
               ? htm`<Box color="red"><P>The project subscribing is already deleted (ID: ${drain.projectId})</P></Box>`
               : ""
           }
-        
-          <P>👇 👀 Use these links to quickly search your logs with Logflare</P>
+          ${drain.logflareSource
+            ? htm`<P>👇 👀 Use these links to quickly search your logs with Logflare</P>`
+            : htm`<P>🚨 We couldn't find this source in your Logflare account</P>`}
           
                     </FsContent>
                   <FsFooter>
+                  ${drain.logflareSource
+            ? htm`
                   <Link href=${drain.logflareUrlForErrors}><Button small style="margin-right:10px">5XX status codes</Button></Link>
                   <Link href=${drain.logflareUrlForLambdas}><Button small style="margin-right:10px">Lambdas</Button></Link>
                   <Link href=${drain.logflareUrlForSlows}><Button small style="margin-right:10px">Slow requests</Button></Link>
                   <Link href=${drain.logflareUrlForStatics}><Button small style="margin-right:10px">Statics</Button></Link>
                   <Link href=${drain.logflareUrlForConsoles}><Button small style="margin-right:10px">All Console Logs</Button></Link>
-                  <Link href=${drain.logflareUrlForGoogleBots}><Button small style="margin-right:10px">Googlebots</Button></Link>
-                    ${drain.clientId === integrationId
+                  <Link href=${drain.logflareUrlForGoogleBots}><Button small style="margin-right:10px">Googlebots</Button></Link>`
+            : ''
+          }
+            ${drain.clientId === integrationId
             ? htm`<Button action=${`delete-drain?${stringify({
               id: drain.id
             })}`} small type="error">Delete Drain</Button>`
@@ -168,13 +180,13 @@ module.exports = async (arg, { state }) => {
                         `
           }
 
-                  </FsFooter>
-            </Fieldset>
+                  </FsFooter >
+            </Fieldset >
           `;
       })
       : htm`
         No drains found!
-    `
+          `
     }
       <AutoRefresh timeout="60000" />
     </Page>
