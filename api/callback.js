@@ -35,6 +35,9 @@ module.exports = async (req, res) => {
   console.log(code)
 
   console.log("Getting gettingLogflareAccessToken");
+  console.log(redirectUri())
+  console.log(code[0])
+
   const logflareToken = await getLogflareAccessToken({
     code: code[0],
     redirectUri: redirectUri()
