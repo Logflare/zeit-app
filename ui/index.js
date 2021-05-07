@@ -63,10 +63,10 @@ module.exports = async (arg, { state }) => {
       d.logflareUrlForSlows.searchParams.append('querystring', 'm.parsedLambdaMessage.report.duration_ms:>2500 c:count(*) c:group_by(t::hour)');
 
       d.logflareUrlForLambdas = new URL(`https://logflare.app/sources/${source.id}/search?tailing=true`);
-      d.logflareUrlForLambdas.searchParams.append('querystring', 'm.souce:"lambda" c:count(*) c:group_by(t::hour)');
+      d.logflareUrlForLambdas.searchParams.append('querystring', 'm.source:"lambda" c:count(*) c:group_by(t::hour)');
 
       d.logflareUrlForStatics = new URL(`https://logflare.app/sources/${source.id}/search?tailing=true`);
-      d.logflareUrlForStatics.searchParams.append('querystring', 'm.souce:"static" c:count(*) c:group_by(t::hour)');
+      d.logflareUrlForStatics.searchParams.append('querystring', 'm.source:"static" c:count(*) c:group_by(t::hour)');
 
       d.logflareUrlForConsoles = new URL(`https://logflare.app/sources/${source.id}/search?tailing=true`);
       d.logflareUrlForConsoles.searchParams.append('querystring', '-m.parsedLambdaMessage.lines.level:NULL c:count(*) c:group_by(t::hour)');
@@ -159,12 +159,12 @@ module.exports = async (arg, { state }) => {
                   <FsFooter>
                   ${drain.logflareSource
             ? htm`
-                  <Link href=${drain.logflareUrlForErrors}><Button small style="margin-right:10px">5XX status codes</Button></Link>
-                  <Link href=${drain.logflareUrlForLambdas}><Button small style="margin-right:10px">Lambdas</Button></Link>
-                  <Link href=${drain.logflareUrlForSlows}><Button small style="margin-right:10px">Slow requests</Button></Link>
-                  <Link href=${drain.logflareUrlForStatics}><Button small style="margin-right:10px">Statics</Button></Link>
-                  <Link href=${drain.logflareUrlForConsoles}><Button small style="margin-right:10px">All Console Logs</Button></Link>
-                  <Link href=${drain.logflareUrlForGoogleBots}><Button small style="margin-right:10px">Googlebots</Button></Link>`
+                  <Link href=${drain.logflareUrlForErrors} target='_blank'><Button small style="margin-right:10px">5XX status codes</Button></Link>
+                  <Link href=${drain.logflareUrlForLambdas} target='_blank'><Button small style="margin-right:10px">Lambdas</Button></Link>
+                  <Link href=${drain.logflareUrlForSlows} target='_blank'><Button small style="margin-right:10px">Slow requests</Button></Link>
+                  <Link href=${drain.logflareUrlForStatics} target='_blank'><Button small style="margin-right:10px">Statics</Button></Link>
+                  <Link href=${drain.logflareUrlForConsoles} target='_blank'><Button small style="margin-right:10px">All Console Logs</Button></Link>
+                  <Link href=${drain.logflareUrlForGoogleBots} target='_blank'><Button small style="margin-right:10px">Googlebots</Button></Link>`
             : ''
           }
             ${drain.clientId === integrationId
