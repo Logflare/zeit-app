@@ -1,4 +1,4 @@
-const { htm } = require("@zeit/integration-utils");
+const { htm } = require("@vercel/integration-utils");
 const getProjects = require("../lib/get-projects");
 const getMetadata = require("../lib/get-metadata");
 const getLogflareSources = require("../lib/get-logflare-sources");
@@ -6,7 +6,14 @@ const getLogflareSources = require("../lib/get-logflare-sources");
 module.exports = async (arg, { state }) => {
   const { payload } = arg;
   const { clientState, teamId, token, configurationId } = payload;
-  const { name = "", projectId = "", type = "json", url = "https://api.logflare.app/logs/zeit", logflareSourceId = "", logflareApiKey = "" } = clientState;
+  const {
+    name = "",
+    projectId = "",
+    type = "json",
+    url = "https://api.logflare.app/logs/vercel",
+    logflareSourceId = "",
+    logflareApiKey = ""
+  } = clientState;
   const { errorMessage } = state;
 
   console.log("Getting metadata");
@@ -22,12 +29,12 @@ module.exports = async (arg, { state }) => {
     teamId
   });
 
-  const logflareToken = metadata.logflareToken
+  const logflareToken = metadata.logflareToken;
 
   console.log("Getting Logflare sources");
   const logflareSources = await getLogflareSources({ logflareToken });
 
-  return htm `
+  return htm`
     <Page>
       <P><Link action="list-drains">Back to list</Link></P>
       <Box marginBottom="50px">
@@ -36,7 +43,9 @@ module.exports = async (arg, { state }) => {
           <H2>Project (optional)</H2>
           <Select label="" name="projectId" value=${projectId}>
             <Option value="" caption="Select a project" />
-            ${projects.map(p => htm`<Option value=${p.id} caption=${p.name} />`)}
+            ${projects.map(
+    p => htm`<Option value=${p.id} caption=${p.name} />`
+  )}
           </Select>
         </FsContent>
         <FsFooter>
@@ -59,7 +68,9 @@ module.exports = async (arg, { state }) => {
           <H2>Logflare Source</H2>
           <Select label="" name="logflareSourceId" value=${logflareSourceId}>
             <Option value="" caption="Select a source" />
-            ${logflareSources.map(s => htm`<Option value=${s.token} caption=${s.name} />`)}
+            ${logflareSources.map(
+    s => htm`<Option value=${s.token} caption=${s.name} />`
+  )}
           </Select>
         </FsContent>
         <FsFooter>

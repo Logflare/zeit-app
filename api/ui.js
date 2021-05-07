@@ -1,4 +1,4 @@
-const { withUiHook } = require("@zeit/integration-utils");
+const { withUiHook } = require("@vercel/integration-utils");
 const route = require("../lib/route");
 
 module.exports = withUiHook(async arg => {
