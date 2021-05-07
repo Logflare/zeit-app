@@ -18,7 +18,7 @@
     esutils "^2.0.2"
     js-tokens "^4.0.0"
 
-"@vercel/integration-utils@0.6.4":
+"@vercel/integration-utils@0.6.5-canary.0":
   version "0.6.5-canary.0"
   resolved "https://registry.yarnpkg.com/@vercel/integration-utils/-/integration-utils-0.6.5-canary.0.tgz#20030530b12f6d9876807b8b4124a7e783a9e842"
   integrity sha512-rfYiq6OVm+xP1FEYN6Z6zTGc4owWxnbDDvZmpIl4czcnixoBPydGz9/CTWIzodRhPS7e7Izsx0os+D8JH/bdQQ==

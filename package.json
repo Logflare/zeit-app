@@ -7,7 +7,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@vercel/integration-utils": "0.6.4",
+    "@vercel/integration-utils": "0.6.5-canary.0",
     "ms": "2.1.2",
     "node-fetch": "2.6.0",
     "raw-body": "2.4.1"
