@@ -32,10 +32,7 @@ module.exports = async (req, res) => {
     }
   }
 
-  console.log(code)
-
   console.log("Getting gettingLogflareAccessToken");
-  console.log(HOST)
 
   const logflareToken = await getLogflareAccessToken({
     code: code[0],
@@ -48,10 +45,12 @@ module.exports = async (req, res) => {
     redirectUri: `${LOGFLARE_HOST}/install/vercel`
   });
 
-  console.log("Getting logflareAccount");
+
   const logflareAccount = await getLogflareAccount({
     logflareToken
   });
+
+  console.log(`Got logflareAccount: ${logflareAccount.id}`);
 
   console.log("Storing accessToken to metadata");
   await setMetadata(
